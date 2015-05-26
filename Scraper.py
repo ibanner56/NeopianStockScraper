@@ -49,7 +49,7 @@ for t in tables:
 	if t.get("align") == "center":
 		stock_table = t.prettify()
 		stocks = stock_table.split("<tr>");
-		for stock_entry in stocks[1:]:
+		for stock_entry in stocks[2:]:
 			stock = stock_entry.split("<td")
 			
 			# Ticker Symbol
