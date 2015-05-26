@@ -17,19 +17,16 @@ br.set_cookiejar(cj)
 br.set_handle_equiv(True)
 br.set_handle_redirect(True)
 br.set_handle_referer(True)
-br.set_handle_robots(False)
 br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
 
 br.addheaders = [('User-agent', 'Chrome')]
 
+print("Connecting to Login")
+
 # The site we will navigate into, handling it's session
 br.open('http://neopets.com/login/')
 
-# View available forms
-for f in br.forms():
-	print(f)
-
-# Select the second (index one) form (the first form is a search query box)
+# Select the login form
 br.select_form(nr=0)
 
 # User credentials
@@ -39,6 +36,7 @@ br.form['password'] = ''
 
 # Login
 br.submit()
+print("Login submitted\nConnecting to Stock Market...")
 
 # Grab the stock market page and, because the people that make neopets don't
 # use classes or id's in their CSS (WTF), get all the tables in the page.
