@@ -1,3 +1,5 @@
+import sys
+from smtplib import SMTP_SSL
 import mechanize
 import cookielib
 from bs4 import BeautifulSoup
@@ -6,6 +8,7 @@ import time
 
 # Your personal sell value
 threshold = 60
+daily = True if len(sys.argv) > 0 and sys.argv[1] == '-d' else False
 
 def strip(s):
 	return re.sub(r'\W+', '', s)
@@ -110,8 +113,34 @@ def main():
 			if int(price) >= threshold:
 				highs.append(ticker + ': ' + price);
 			
-	print(lows)
-	print(highs)
+	# print(lows)
+	# print(highs)
+
+	if(not daily and len(highs) == 0):
+		return
+
+	# Email info for alerts.
+	# TODO: FILL THIS OUT YOU DINGUS
+	fromaddr = ''
+	toaddr = ''
+	password = ''
+	
+	# Login to the server
+	server = SMTP_SSL('smtp.gmail.com', 465)
+	server.ehlo()
+	server.login(fromaddr, password)
+
+	# Build the message
+	message = '\r\n'.join(['From: ' + fromaddr, 'To: ' + toaddr, 'Subject: NSM Update', ''])
+	message += '\r\n'
+	if(daily):
+		message += 'Today\'s lows: ' + ', '.join(lows) 
+		message += '\r\n'
+	if(len(highs) > 0):
+		message += 'Stocks currently above the sale threshold: ' + ', '.join(highs)
+	
+	server.sendmail(fromaddr, toaddr, message)
+	server.close()
 
 if __name__ == '__main__':
 	main()
