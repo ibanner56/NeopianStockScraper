@@ -8,7 +8,7 @@ import time
 
 # Your personal sell value
 threshold = 60
-daily = True if len(sys.argv) > 0 and sys.argv[1] == '-d' else False
+daily = True if len(sys.argv) > 1 and sys.argv[1] == '-d' else False
 
 def strip(s):
 	return re.sub(r'\W+', '', s)
